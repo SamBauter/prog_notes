@@ -165,6 +165,8 @@ Under the hood you can imagine this code is probably something like:
 ```
 
 ### Combine Reducers
+The store only really has one reducer. But its a pain to write an enormous one to handle all the actions.
+Combine reducers will allow us to write reducers for fewer actions and combine them for us.
 ```js
 const initialState = {
     users: [
@@ -190,15 +192,62 @@ const reducer = (state = initialState, action){
     //BETTER
     if(action.type===ADD_USER){
         return {
-            ...state.tasks, 
+            ...state, 
             users: [...state.users,{id:state.user. action.payload}]}
     } 
     
     if(action.type===ADD_TASK){
-        return state.tasks.push({title:action.title})
+        ...state,
+        return [...state.tasks,action.payload]})
     }
     return state
 }
 ```
+Break the bigger reducer apart into separate reducers. Slices up the state tree into manageable chunks
+```js
+const userReducer = (users=initialState.users,action) => {
+    if (action.type === ADD_USER) {
+    return [...users, action.payload]}
+    return initialState.users
+}
+
+const taskReducer = (tasks = initialState.tasks,action)=> {
+    if (action.type === ADD_TASK) {
+        return [...tasks, action.payload]
+    }
+    return initialState.tasks
+}
+
+const reducer = combineReducers({users:userReducer,tasks:taskReducer}) // makes master reducer
+// Flatter is better here to avoid nested combineReducers
+
+const store = createStore(reducer);
+```
+
+### Enhancers
+```js
+    const reducer = state => state
+    const store = createStore(reducer, {}, ()=> {}); //Args are reducer, initialState, and enhancer
+```
+Enhancers are an opportunity to do a bunch of stuff before calling create store this is a curried function.
+![img_1.png](img_1.png)
+
+Write an enhancer that takes performance metrics of everything that happens in redux.
+```js
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
