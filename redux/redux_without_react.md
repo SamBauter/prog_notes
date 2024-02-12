@@ -224,15 +224,23 @@ const reducer = combineReducers({users:userReducer,tasks:taskReducer}) // makes 
 const store = createStore(reducer);
 ```
 
-### Enhancers
+### Enhancers and Apply Middleware
 ```js
     const reducer = state => state
     const store = createStore(reducer, {}, ()=> {}); //Args are reducer, initialState, and enhancer
 ```
-Enhancers are an opportunity to do a bunch of stuff before calling create store this is a curried function.
+Both initial state and enhancer are OPTIONAL
+Enhancers are an opportunity to do a bunch of stuff before calling create store this is a
+function that returns another function in other words a curried function.
+
+It takes the copy of createStore that we are calling and a copy of all of its args. You can
+do whatever you want with this info in the enhancer before you actually call createStore within it.
+
+Why though?! The redux dev tools use these to investigate variables and state before  
 ![img_1.png](img_1.png)
 
-Write an enhancer that takes performance metrics of everything that happens in redux.
+Essentialls
+
 ```js
 
 ```
